@@ -1,0 +1,42 @@
+@model Product
+@{
+    ViewData["Title"] = "إضافة منتج";
+}
+
+<h3 class="mb-4">إضافة منتج جديد</h3>
+
+<div class="admin-table-card p-4" style="max-width: 600px;">
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label class="form-label">اسم المنتج</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">النوع</label>
+            <select asp-for="Type" class="form-select">
+                <option value="AirConditioner">تكييف</option>
+                <option value="WaterFilter">فلتر مياه</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">الوصف</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-6">
+                <label class="form-label">السعر</label>
+                <input asp-for="Price" class="form-control" />
+            </div>
+            <div class="col-6">
+                <label class="form-label">الكمية</label>
+                <input asp-for="StockQuantity" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">اسم ملف الصورة (اختياري)</label>
+            <input asp-for="ImageFileName" class="form-control" placeholder="مثال: ac3.jpg" />
+            <small class="text-muted">ارفعي الصورة يدويًا في مجلد wwwroot/images/products بنفس الاسم</small>
+        </div>
+        <button type="submit" class="btn btn-order-cta w-100">حفظ المنتج</button>
+    </form>
+</div>

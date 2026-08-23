@@ -1,0 +1,48 @@
+@model List<Installment>
+@{
+    ViewData["Title"] = "المراجعة الشهرية";
+}
+
+<h3 class="mb-2">المراجعة الشهرية والتحصيل</h3>
+<p class="text-muted mb-4">الأقساط المستحقة خلال شهر @DateTime.Now.ToString("MMMM yyyy")</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-success">لا توجد أقساط مستحقة هذا الشهر 🎉</div>
+}
+else
+{
+    <div class="table-responsive admin-table-card">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>العميل</th>
+                    <th>المنتج</th>
+                    <th>تاريخ الاستحقاق</th>
+                    <th>المبلغ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var inst in Model)
+                {
+                    <tr>
+                        <td>@inst.Order?.CustomerName <br /><small class="text-muted">@inst.Order?.CustomerPhone</small></td>
+                        <td>@inst.Order?.Product?.Name</td>
+                        <td>@inst.DueDate.ToString("dd/MM/yyyy")</td>
+                        <td>@inst.Amount.ToString("N0") جنيه</td>
+                        <td>
+                            <form asp-action="MarkAsPaid" asp-route-id="@inst.InstallmentID" method="post">
+                                <button type="submit" class="btn btn-sm btn-order-cta">تحديد كمدفوع</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="alert alert-info mt-4">
+    💡 <strong>ملاحظة:</strong> ميزة إرسال تذكيرات تلقائية بالإيميل/SMS محتاجة ربط بخدمة خارجية (زي Twilio للـ SMS، أو SendGrid للإيميل) — دي خطوة تالية ممكن نضيفها بعد ما الأساسيات تشتغل تمام.
+</div>

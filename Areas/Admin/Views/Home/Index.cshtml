@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "لوحة التحكم";
+}
+
+<h3 class="mb-4">مرحبًا بيكي في لوحة التحكم 👋</h3>
+
+<div class="row g-4">
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card stat-blue">
+            <div class="stat-value">@ViewBag.TotalProducts</div>
+            <div class="stat-label">إجمالي المنتجات</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card stat-orange">
+            <div class="stat-value">@ViewBag.LowStockCount</div>
+            <div class="stat-label">منتجات على وشك النفاد</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card stat-green">
+            <div class="stat-value">@ViewBag.TotalOrders</div>
+            <div class="stat-label">إجمالي الطلبات</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card stat-red">
+            <div class="stat-value">@ViewBag.PendingInstallments</div>
+            <div class="stat-label">أقساط لسه مستحقة</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-2">
+    <div class="col-md-4">
+        <a asp-controller="Products" asp-action="Index" class="quick-link-card">
+            📦 <span>إدارة المخزون</span>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a asp-controller="Orders" asp-action="Index" class="quick-link-card">
+            🧾 <span>عرض المبيعات</span>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a asp-controller="Audit" asp-action="Index" class="quick-link-card">
+            📅 <span>المراجعة الشهرية</span>
+        </a>
+    </div>
+</div>
