@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<section class="hero-section">
+    <div class="hero-bg-shape shape-1"></div>
+    <div class="hero-bg-shape shape-2"></div>
+    <div class="container text-center position-relative">
+        <div class="hero-logo mb-4">
+    <img src="~/images/logo.png" alt="Ideal H2O Logo" class="hero-logo-img" />
+
+
+           
+        </div>
+        <h1 class="hero-title mb-3">Welcome to <span class="text-gradient">Ideal H2O</span></h1>
+        <p class="hero-subtitle mb-5">
+            أفضل الأسعار، أعلى جودة، وتقسيط يناسب ظروفك
+        </p>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-hero-cta">
+            تصفّح المنتجات <span class="arrow">←</span>
+        </a>
+    </div>
+</section>
+
+
+
+
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 d-flex">
+                <div class="feature-card">
+                    <div class="feature-photo-wrap">
+                        <img src="~/images/quality.png" alt="منتجات أصلية" class="feature-photo" />
+                    </div>
+                    <h5>منتجات أصلية</h5>
+                    <p class="text-muted">تكييفات وفلاتر مياه بضمان الوكيل وجودة موثوقة</p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex ">
+                <div class="feature-card">
+                    <div class="feature-photo-wrap">
+                        <img src="~/images/installment.png" alt="تقسيط مرن" class="feature-photo" />
+                    </div>
+                    <h5>تقسيط مرن</h5>
+                    <p class="text-muted">احسبي القسط الشهري فورًا واختاري المدة اللي تناسبك</p>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex">
+                <div class="feature-card">
+                    <div class="feature-photo-wrap">
+                        <img src="~/images/delivery.png" alt="توصيل سريع" class="feature-photo" />
+                    </div>
+                    <h5>توصيل سريع</h5>
+                    <p class="text-muted">استلمي طلبك بسرعة وفي أي وقت يناسبك</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+

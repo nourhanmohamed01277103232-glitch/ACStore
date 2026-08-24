@@ -1,0 +1,61 @@
+@model List<Product>
+@{
+    ViewData["Title"] = "المنتجات";
+}
+
+<div class="products-page py-5">
+    <div class="container">
+    <div class="text-center mb-5">
+        <h2 class="section-title">منتجاتنا</h2>
+        <p class="text-muted">تصفّحي كل التكييفات وفلاتر المياه المتاحة</p>
+    </div>
+    </div>
+    <div class="d-flex justify-content-center gap-2 mb-5 filter-bar">
+        <a asp-action="Index" class="btn filter-btn @(ViewBag.SelectedType == null ? "active" : "")">الكل</a>
+        <a asp-action="Index" asp-route-type="AirConditioner" class="btn filter-btn @(ViewBag.SelectedType == "AirConditioner" ? "active" : "")">تكييفات</a>
+        <a asp-action="Index" asp-route-type="WaterFilter" class="btn filter-btn @(ViewBag.SelectedType == "WaterFilter" ? "active" : "")">فلاتر مياه</a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col-sm-6 col-lg-4 col-xl-3">
+                <a asp-action="Details" asp-route-id="@product.ProductID" class="product-card-link">
+                    @{
+                        var cardClass = product.Type.ToString() == "AirConditioner" ? "card-ac" : "card-filter";
+                    }
+                    <div class="product-card @cardClass">
+                      
+                        <div class="product-img-wrap">
+                            @{
+                                var imageName = string.IsNullOrEmpty(product.ImageFileName) ? "placeholder.svg" : product.ImageFileName;
+                            }
+                            <img src="@Url.Content("~/images/products/" + imageName)" alt="@product.Name" class="product-img" />
+
+                            @if (!product.IsAvailable)
+                            {
+                                <span class="badge-outofstock">غير موفر</span>
+                            }
+                        </div>
+
+                          
+                        <div class="product-info">
+                            <h6 class="product-name">@product.Name</h6>
+                            <p class="product-price">@product.Price.ToString("N0") جنيه</p>
+                            <p class="product-stock">
+                                @if (product.IsAvailable)
+                                {
+                                    <span class="text-stock-ok">متاح (@product.StockQuantity قطعة)</span>
+                                }
+                                else
+                                {
+                                    <span class="text-stock-out">نفذت الكمية</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

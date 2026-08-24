@@ -1,0 +1,48 @@
+@model Order
+@{
+    ViewData["Title"] = "تم تأكيد الطلب";
+}
+
+<div class="container py-5 text-center" style="max-width: 700px;">
+    <div class="success-icon mb-3">✅</div>
+    <h3 class="mb-2">تم استلام طلبك بنجاح!</h3>
+    <p class="text-muted mb-5">هيتم التواصل معاكي قريبًا لتأكيد التفاصيل</p>
+
+    <div class="order-summary-card text-start">
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">المنتج</span>
+            <strong>@Model.Product?.Name</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">طريقة الدفع</span>
+            <strong>@(Model.PaymentType == PaymentType.Cash ? "كاش" : "تقسيط")</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">الإجمالي</span>
+            <strong>@Model.TotalAmount.ToString("N0") جنيه</strong>
+        </div>
+
+        @if (Model.Installments.Any())
+        {
+            <hr />
+            <h6 class="mb-3">جدول الأقساط</h6>
+            <table class="table table-sm">
+                <thead>
+                    <tr><th>القسط</th><th>تاريخ الاستحقاق</th><th>المبلغ</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var inst in Model.Installments.OrderBy(i => i.InstallmentNumber))
+                    {
+                        <tr>
+                            <td>@inst.InstallmentNumber</td>
+                            <td>@inst.DueDate.ToString("dd/MM/yyyy")</td>
+                            <td>@inst.Amount.ToString("N0") جنيه</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-hero-cta mt-4">العودة للرئيسية</a>
+</div>

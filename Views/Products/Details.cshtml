@@ -1,0 +1,83 @@
+@model Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container py-5">
+    <div class="row g-5 align-items-start">
+        <div class="col-lg-6">
+            <div class="detail-img-wrap">
+                <img src="~/images/products/@(Model.ImageFileName ?? "placeholder.svg")" alt="@Model.Name" class="detail-img" onerror="this.src='/images/products/placeholder.svg'" />
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <span class="badge-type">@(Model.Type == ProductType.AirConditioner ? "تكييف" : "فلتر مياه")</span>
+            <h2 class="detail-title mt-3">@Model.Name</h2>
+            <p class="detail-desc text-muted">@Model.Description</p>
+
+            <div class="detail-price-box">
+                <span class="detail-price">@Model.Price.ToString("N0") جنيه</span>
+                @if (Model.IsAvailable)
+                {
+                    <span class="text-stock-ok">متاح — @Model.StockQuantity قطعة في المخزون</span>
+                }
+                else
+                {
+                    <span class="text-stock-out">نفذت الكمية حاليًا</span>
+                }
+            </div>
+
+            @if (Model.IsAvailable)
+            {
+                <div class="calc-box mt-4">
+                    <h6 class="mb-3">💳 احسبي القسط الشهري</h6>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label small">المقدم (جنيه)</label>
+                            <input type="number" id="downPayment" class="form-control" min="0" max="@Model.Price" value="@(Model.Price * 0.2m)" data-price="@Model.Price" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small">مدة السداد (بالشهور)</label>
+                            <select id="duration" class="form-select">
+                                <option value="6">6 شهور</option>
+                                <option value="12" selected>12 شهر</option>
+                                <option value="18">18 شهر</option>
+                                <option value="24">24 شهر</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="calc-result mt-3">
+                        القسط الشهري التقديري: <span id="monthlyResult" class="calc-amount">0</span> جنيه / شهر
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <a asp-controller="Orders" asp-action="Create" asp-route-productId="@Model.ProductID" class="btn btn-order-cta flex-grow-1">
+                        اطلبي الآن
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const priceInput = document.getElementById('downPayment');
+        const durationSelect = document.getElementById('duration');
+        const result = document.getElementById('monthlyResult');
+        const price = @Model.Price;
+
+        function calc() {
+            const down = parseFloat(priceInput.value) || 0;
+            const months = parseInt(durationSelect.value);
+            const remaining = Math.max(price - down, 0);
+            const monthly = (remaining / months).toFixed(0);
+            result.textContent = Number(monthly).toLocaleString('ar-EG');
+        }
+
+        priceInput.addEventListener('input', calc);
+        durationSelect.addEventListener('change', calc);
+        calc();
+    </script>
+}

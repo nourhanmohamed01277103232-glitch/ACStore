@@ -1,0 +1,87 @@
+@model Order
+@{
+    ViewData["Title"] = "تقديم طلب";
+}
+
+<div class="container py-5" style="max-width: 700px;">
+    <div class="order-form-card">
+        <h4 class="mb-1">إتمام الطلب</h4>
+        <p class="text-muted mb-4">@Model.Product?.Name — @Model.Product?.Price.ToString("N0") جنيه</p>
+
+        <form asp-action="Create" method="post">
+            <input type="hidden" asp-for="ProductID" />
+            <div asp-validation-summary="All" class="alert alert-danger" style="display:none"></div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@err.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label">الاسم بالكامل</label>
+                <input asp-for="CustomerName" class="form-control" placeholder="اكتبي اسمك" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">رقم التليفون</label>
+                <input asp-for="CustomerPhone" class="form-control" placeholder="01xxxxxxxxx" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">البريد الإلكتروني (اختياري)</label>
+                <input asp-for="CustomerEmail" class="form-control" placeholder="example@mail.com" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">العنوان</label>
+                <input asp-for="CustomerAddress" class="form-control" placeholder="العنوان بالتفصيل" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label d-block">طريقة الدفع</label>
+                <div class="payment-toggle">
+                    <label class="payment-option">
+                        <input type="radio" name="PaymentType" value="Cash" checked />
+                        <span>💵 كاش</span>
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="PaymentType" value="Installment" id="installmentRadio" />
+                        <span>💳 تقسيط</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="installmentFields" style="display:none;" class="row g-3 mb-3">
+                <div class="col-6">
+                    <label class="form-label small">المقدم (جنيه)</label>
+                    <input asp-for="DownPayment" class="form-control" value="@(Model.Product!.Price * 0.2m)" />
+                </div>
+                <div class="col-6">
+                    <label class="form-label small">مدة السداد (بالشهور)</label>
+                    <select asp-for="DurationMonths" class="form-select">
+                        <option value="6">6 شهور</option>
+                        <option value="12" selected>12 شهر</option>
+                        <option value="18">18 شهر</option>
+                        <option value="24">24 شهر</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-order-cta w-100 mt-2">تأكيد الطلب</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const radios = document.querySelectorAll('input[name="PaymentType"]');
+        const installmentFields = document.getElementById('installmentFields');
+        radios.forEach(r => r.addEventListener('change', () => {
+            installmentFields.style.display = document.getElementById('installmentRadio').checked ? 'flex' : 'none';
+        }));
+    </script>
+}
